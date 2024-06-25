@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Courses Login</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .loginpanel {
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+        }
+
+        .logo img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .instructions {
+            background-color: #007bff;
+            color: white;
+            padding: 2rem;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            flex: 1;
+        }
+
+        .instructions h2 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .instructions hr {
+            border-top: 2px solid #fff;
+            width: 50%;
+            margin-left: 0;
+        }
+
+        .instructions p,
+        .instructions i {
+            font-size: 16px;
+        }
+
+        .form {
+            padding: 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .input-group-username,
+        .input-group-password {
+            margin-bottom: 15px;
+        }
+
+        .input-group-addon {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .rememberpass label {
+            margin-left: 5px;
+        }
+
+        .forgetpass p {
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .card {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="page" class="container-fluid mt-0">
+        <div id="page-content" class="row">
+            <div id="region-main-box" class="col-12">
+                <section id="region-main" class="col-12">
+                    <span class="notifications" id="user-notifications"></span>
+                    <div role="main"><span id="maincontent"></span>
+                        <div class="my-1 my-sm-5"></div>
+
+                        <div class="row justify-content-center logo">
+                            <img src="https://www.chatcloud.net/wp-content/uploads/2020/08/chatcloud_color_blk.png" title="Training Courses" alt="Training Courses">
+                        </div>
+
+                        <div class="row justify-content-center my-4">
+                            <div class="col-12 col-md-12 col-lg-8">
+                                <div class="card loginpanel">
+                                    <div class="instructions">
+                                        <h2>Chatcloud Training Courses</h2>
+                                        <hr align="left" />
+                                        <div class="m-t-1">
+                                            <i class="fa fa-check-circle"></i> Your browser must support cookies
+                                        </div>
+                                    </div>
+                                    <div class="form">
+                                        <form id="loginForm">
+                                            <p class="welcome">Already have an account?</p>
+                                            <label for="username" class="sr-only">Username/Email</label>
+                                            <div class="input-group input-group-username">
+                                                <span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
+                                                <input type="text" name="username" id="username" class="form-control" placeholder="Username/Email" required>
+                                            </div>
+                                            <label for="password" class="sr-only">Password</label>
+                                            <div class="input-group input-group-password">
+                                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                                <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+                                            </div>
+                                            <div class="rememberpass m-t-1">
+                                                <input type="checkbox" name="rememberusername" id="rememberusername" value="1" />
+                                                <label for="rememberusername">Remember me</label>
+                                            </div>
+                                            <button type="button" class="btn btn-primary btn-block" onclick="login()">Login</button>
+                                        </form>
+                                        <div class="forgetpass m-t-1">
+                                            <p><a href="mailto:recruitment.tchattrader@gmail.com">Forgot username or password?</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div></section>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Registered users with 24-hour expiration
+        const users = {
+            "gbaguidifrancket98@gmail.com": {
+                password: "12345678",
+                expires: new Date(new Date().getTime() + 24 * 60 * 60 * 1000) // 24 hours from now
+            },
+            "user2@example.com": {
+                password: "password2",
+                expires: new Date(new Date().getTime() + 24 * 60 * 60 * 1000) // 24 hours from now
+            }
+        };
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const savedUsername = localStorage.getItem("savedUsername");
+            const savedPassword = localStorage.getItem("savedPassword");
+
+            if (savedUsername && savedPassword) {
+                document.getElementById("username").value = savedUsername;
+                document.getElementById("password").value = savedPassword;
+                document.getElementById("rememberusername").checked = true;
+            }
+        });
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const remember = document.getElementById('rememberusername').checked;
+            const user = users[username];
+
+            if (user && user.password === password && new Date() < new Date(user.expires)) {
+                if (remember) {
+                    localStorage.setItem("savedUsername", username);
+                    localStorage.setItem("savedPassword", password);
+                } else {
+                    localStorage.removeItem("savedUsername");
+                    localStorage.removeItem("savedPassword");
+                }
+
+                alert('Login successful');
+                // Redirect after successful login
+                window.location.href = 'https://trainingcourse.interfacechatcloud.fun/course.html';
+            } else {
+                alert('Incorrect username or password, or login information has expired.');
+            }
+        }
+    </script>
+
+</body>
+
+</html>
